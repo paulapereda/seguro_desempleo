@@ -1,0 +1,33 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1589319565868.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "383FC127",
+    "lastKnownWriteTime" : 140522683966408,
+    "last_content_update" : 1589319565868,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "D54DA04F",
+        "caption" : "ICSA_df",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=ICSA_df&cache_key=D54DA04F",
+        "displayedObservations" : "2777",
+        "environment" : "",
+        "expression" : "ICSA_df",
+        "object" : "ICSA_df",
+        "preview" : "0",
+        "totalObservations" : "2777",
+        "variables" : "2"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}
