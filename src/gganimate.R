@@ -1,32 +1,24 @@
 library(tidyverse) # general manipulation
 library(lubridate) # date manipulation
 library(gganimate) # animated charts
-library(hrbrthemes)
-library(gifski)
 
-sd_df <- readxl::read_excel("data/solicitudes_seguro_desempleo.xlsx") %>% 
-  select(date, Total)
+historical_sd <- readxl::read_excel("data/solicitudes_seguro_desempleo.xlsx") %>% 
+  transmute(date = as.Date(date), Total) %>% 
+  write_rds("data/historical_sd.rds")
 
-# # static data range
-# historical_sd <- sd_df %>% 
-#   filter(date <= "2020-02-01") %>%
-#   rename(date_2 = date)
-# 
-# pandemic_spike <- sd_df %>%
-#   filter(date >= "2020-02-01")
-
-historical_sd <- sd_df 
+# Solicitudes de seguro de desempleo - histórico (1988-2020)
   
 plot <- ggplot(historical_sd, aes(x = date, y = Total)) +
-  geom_line(size = 0.5, colour = "#abcdef") +
-  geom_path(data = historical_sd, aes(x = date, y = Total, group = 1),  colour = "#abcdef") + # definte extra data set to make it static
-  scale_y_continuous(breaks = c(10000, 20000, 40000, 80000),
+  geom_path(data = historical_sd, aes(x = date, y = Total, group = 1),  colour = "#7b5888") + # definte extra data set to make it static
+  scale_y_continuous(breaks = seq(0, 90000, by = 10000),
                      labels = scales::number_format(big.mark = ".")) +
-  labs(title = "Récord en solicitudes de seguro de desempleo en Uruguay",
+  scale_x_date(date_breaks = "2 years", date_labels = "%Y", expand = c(0,0)) +
+  labs(title = "Solicitudes mensuales de seguro de desempleo en Uruguay (1988-2020)",
        x = "",
-       y = "Solicitudes mensuales",
+       y = "",
        caption = "Fuente: elaboración propia en base a datos del BPS.
-                  Paula Pereda - @paubgood") +
+                  @paubgood - Paula Pereda") +
+  theme_minimal() +
   theme(panel.grid = element_blank(),
         panel.grid.major.y = element_line(colour = "grey95"),
         axis.title.y = element_text(size = 8, vjust = 3),
@@ -34,13 +26,20 @@ plot <- ggplot(historical_sd, aes(x = date, y = Total)) +
         axis.line.x = element_line(),
         plot.title = element_text(hjust = 0.5, face = "bold"),
         plot.subtitle = element_text(colour = "grey30", hjust = 0.5),
-        plot.caption = element_text(colour = "grey50")) +
+        plot.caption = element_text(colour = "grey50"),
+        text = element_text(family = "Arial Narrow")) +
   transition_reveal(date) +
-  view_follow(fixed_y = F, fixed_x = T) # show all the x-axis and let the y grow
+  view_follow(fixed_y = TRUE, fixed_x = TRUE) +
+  coord_cartesian(clip = 'off') +
+  ease_aes('cubic-in-out')
 
-options(gganimate.dev_args = list(height = 4, width = 4*1.777778, units = 'in', type = "cairo", res = 144))
+options(gganimate.dev_args = list(height = 4, 
+                                  width = 4*1.777778, 
+                                  units = 'in', 
+                                  type = "cairo", 
+                                  res = 144))
 
 animate(plot = plot, 
-        renderer = gifski_renderer("output/prueba.gif"),
-        fps = 20, duration = 12, end_pause = 220)
+        renderer = gifski_renderer("output/evolucion_sd.gif"),
+        fps = 20, duration = 12, end_pause = 80)
 

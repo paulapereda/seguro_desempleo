@@ -1,6 +1,10 @@
 {
-    "path" : "~/Dropbox/R/seguro_desempleo/data",
+    "path" : "~/Dropbox/R/seguro_desempleo/output",
     "sortOrder" : [
+        {
+            "ascending" : false,
+            "columnIndex" : 3
+        },
         {
             "ascending" : true,
             "columnIndex" : 2
