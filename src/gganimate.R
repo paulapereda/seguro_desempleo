@@ -9,8 +9,8 @@ historical_sd <- readxl::read_excel("data/solicitudes_seguro_desempleo.xlsx") %>
 
 # Solicitudes de seguro de desempleo - histórico (1988-2020)
   
-plot <- ggplot(historical_sd, aes(x = date, y = Total)) +
-  geom_path(data = historical_sd, aes(x = date, y = Total, group = 1),  colour = "#7b5888") + # definte extra data set to make it static
+plot <- ggplot(historical_sd, aes(x = date, y = total_sd)) +
+  geom_path(data = historical_sd, aes(x = date, y = total_sd, group = 1),  colour = "#7b5888") + # definte extra data set to make it static
   scale_y_continuous(breaks = seq(0, 90000, by = 10000),
                      labels = scales::number_format(big.mark = ".")) +
   scale_x_date(date_breaks = "2 years", date_labels = "%Y", expand = c(0,0)) +
@@ -46,12 +46,14 @@ animate(plot = plot,
 
 # Solicitudes de seguro de desempleo ajustado por nº cotizantes - histórico (1988-2020)
 
-plot_2 <- ggplot(historical_sd, aes(x = date, y = ratio_sd_cot)) +
-  geom_path(data = historical_cot, aes(x = date, y = ratio_sd_cot, group = 1),  colour = "#7b5888") + # definte extra data set to make it static
-  scale_y_continuous(breaks = seq(0, 90000, by = 10000),
-                     labels = scales::number_format(big.mark = ".")) +
+plot_2 <- historical_sd %>% 
+filter(!is.na(ratio_sd_cot)) %>% 
+ ggplot(aes(x = date, y = ratio_sd_cot)) +
+  geom_path(aes(x = date, y = ratio_sd_cot, group = 1),  colour = "#7b5888") + # definte extra data set to make it static
+  scale_y_continuous(limits = c(0, 0.085), 
+                     labels = scales::percent_format(accuracy = 1L)) +
   scale_x_date(date_breaks = "2 years", date_labels = "%Y", expand = c(0,0)) +
-  labs(title = "Ratio entre las solicitudes mensuales de seguro de desempleo y \ncotizantes mensuales a la seguridad social en Uruguay (1988-2020)",
+  labs(title = "Solicitudes mensuales de seguro de desempleo en relación a los\n cotizantes a la seguridad social en Uruguay (1988-2020)",
        x = "",
        y = "",
        caption = "Fuente: elaboración propia en base a datos del BPS.
