@@ -5,5 +5,5 @@
 </p>
 
 <p align="center">
-  <img src="https://github.com/paulapereda/seguro_desempleo/blob/master/output/evolucionratio_sd_cot.gif">
+  <img src="https://github.com/paulapereda/seguro_desempleo/blob/master/output/evolucion_ratio_sd_cot.gif">
 </p>
